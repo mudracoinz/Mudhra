@@ -1133,7 +1133,7 @@ void MapPort()
 // The second name should resolve to a list of seed addresses.
 static const char *strDNSSeed[][2] = {
 		    	{"1", "185.120.5.190"},
-		    	{"2", "185.61.151.109"},				
+			
 };
 
 void ThreadDNSAddressSeed(void* parg)
