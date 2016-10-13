@@ -977,15 +977,30 @@ int64_t GetProofOfWorkReward(int64_t nFees)
         return nSubsidy + nFees;
       }
       
-    else if (pindexBest->nHeight <= 1440)
+    else if (pindexBest->nHeight <= 73950)
       {
         int64_t nSubsidy = 0 * COIN;
         return nSubsidy + nFees;
       }
-      
+
+    else if (pindexBest->nHeight <= 74950)
+      {
+        int64_t nSubsidy = 1000000 * COIN;
+        return nSubsidy + nFees;
+      }      
     
+    else if (pindexBest->nHeight <= 75894)
+      {
+        int64_t nSubsidy = 500 * COIN;
+        return nSubsidy + nFees;
+      }      
       
-      
+    else if (pindexBest->nHeight <= 93894)
+      {
+        int64_t nSubsidy = 5 * COIN;
+        return nSubsidy + nFees;
+      }	  
+	  
     if (fDebug && GetBoolArg("-printcreation"))
     printf("GetProofOfWorkReward() : create=%s nSubsidy=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nSubsidy);
     
@@ -997,6 +1012,30 @@ int64_t GetProofOfWorkReward(int64_t nFees)
 int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees)
 {
     int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
+
+	if(pindexBest->nHeight <= 73950 )
+	{
+	    nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8); 
+		return nSubsidy + nFees; 
+	}
+
+	else if(pindexBest->nHeight <= 74950)
+	{
+        nSubsidy = 1000000 * COIN; 
+		return nSubsidy + nFees; 
+	}	
+
+	else if(pindexBest->nHeight <= 75950)
+	{
+        nSubsidy = 1000000 * COIN; 
+		return nSubsidy + nFees; 
+	}	
+	
+	else if(pindexBest->nHeight <= 5000000 )
+	{
+	    nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8); 
+		return nSubsidy + nFees; 
+	}
 
     if (fDebug && GetBoolArg("-printcreation"))
         printf("GetProofOfStakeReward(): create=%s nCoinAge=%"PRId64"\n", FormatMoney(nSubsidy).c_str(), nCoinAge);
@@ -2131,9 +2170,9 @@ bool CBlock::AcceptBlock()
         return DoS(10, error("AcceptBlock() : prev block not found"));
     CBlockIndex* pindexPrev = (*mi).second;
     int nHeight = pindexPrev->nHeight+1;
-
-    if (IsProofOfWork() && nHeight > LAST_POW_BLOCK)
-        return DoS(100, error("AcceptBlock() : reject proof-of-work at height %d", nHeight));
+//Mudhra is now PoW & PoS Hybrid
+/*    if (IsProofOfWork() && nHeight > LAST_POW_BLOCK)
+        return DoS(100, error("AcceptBlock() : reject proof-of-work at height %d", nHeight)); */
 
     // Check proof-of-work or proof-of-stake
     if (nBits != GetNextTargetRequired(pindexPrev, IsProofOfStake()))
